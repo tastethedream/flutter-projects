@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_movie_app/screens/details_screen.dart';
 import 'screens/dashboard.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       home: Dashboard(),
+      routes: {DetailsScreen.routeName: (context) => DetailsScreen()},
     );
   }
 }

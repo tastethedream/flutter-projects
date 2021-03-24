@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/models/movie.dart';
+import 'package:my_movie_app/screens/details_screen.dart';
 
 class TopRatedListItem extends StatelessWidget {
   final int index;
@@ -12,15 +13,34 @@ class TopRatedListItem extends StatelessWidget {
       width: 160.0,
       child: Column(
         children: [
-          Card(
-            elevation: 10,
-            child: Container(
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(topRatedMovieList[index].imageUrl),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                DetailsScreen.routeName,
+                arguments: {
+                  'id': topRatedMovieList[index].id,
+                  'title': topRatedMovieList[index].title,
+                  'imageUrl': topRatedMovieList[index].imageUrl,
+                  'description': topRatedMovieList[index].description,
+                  'rating': topRatedMovieList[index].rating,
+                  'year': topRatedMovieList[index].year,
+                  'duration': topRatedMovieList[index].duration,
+                },
+              );
+            },
+            child: Card(
+              elevation: 10,
+              child: Hero(
+                tag: topRatedMovieList[index].id,
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(topRatedMovieList[index].imageUrl),
+                    ),
+                  ),
                 ),
               ),
             ),
