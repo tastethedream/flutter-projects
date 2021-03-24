@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_movie_app/widgets/horizontal_list.dart';
-import 'package:my_movie_app/widgets/vertical_list.dart';
+import 'package:my_movie_app/widgets/horizontal_list_item.dart';
+import 'package:my_movie_app/widgets/top_rated_list_item.dart';
+import 'package:my_movie_app/widgets/vertical_list_item.dart';
+import 'package:my_movie_app/models/movie.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -39,13 +41,15 @@ class Dashboard extends StatelessWidget {
             ),
             Container(
               height: 280.0,
-              child: ListView(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  HorizontalList(),
-                  HorizontalList(),
-                  HorizontalList(),
-                ],
+                itemCount: movieList.length,
+                itemBuilder: (ctx, i) => HorizontalListItem(i),
+                // children: [
+                //   HorizontalList(),
+                //   HorizontalList(),
+                //   HorizontalList(),
+                // ],
               ),
             ),
             SizedBox(
@@ -73,13 +77,15 @@ class Dashboard extends StatelessWidget {
             Container(
               height: 500,
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ListView(
+              child: ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
-                children: [
-                  VerticalList(),
-                  VerticalList(),
-                  VerticalList(),
-                ],
+                itemCount: bestMovieList.length,
+                itemBuilder: (ctx, i) => VerticalListItem(i),
+                //   children: [
+                //     VerticalList(),
+                //     VerticalList(),
+                //     VerticalList(),
+                // ],
               ),
             ),
             SizedBox(
@@ -91,7 +97,7 @@ class Dashboard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Recommended',
+                    'Top Rated',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -106,13 +112,10 @@ class Dashboard extends StatelessWidget {
             ),
             Container(
               height: 280.0,
-              child: ListView(
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  HorizontalList(),
-                  HorizontalList(),
-                  HorizontalList(),
-                ],
+                itemCount: topRatedMovieList.length,
+                itemBuilder: (ctx, i) => TopRatedListItem(i),
               ),
             ),
           ],

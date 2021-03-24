@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_movie_app/models/movie.dart';
 
-class HorizontalList extends StatelessWidget {
+class TopRatedListItem extends StatelessWidget {
+  final int index;
+  TopRatedListItem(this.index);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +20,7 @@ class HorizontalList extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/images/test.jpeg'),
+                  image: NetworkImage(topRatedMovieList[index].imageUrl),
                 ),
               ),
             ),
@@ -25,7 +29,7 @@ class HorizontalList extends StatelessWidget {
             height: 10,
           ),
           Text(
-            'Nice Plant',
+            topRatedMovieList[index].title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             textAlign: TextAlign.center,
           )

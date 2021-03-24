@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_movie_app/models/movie.dart';
 
-class VerticalList extends StatelessWidget {
+class VerticalListItem extends StatelessWidget {
+  final int index;
+  VerticalListItem(this.index);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,7 +23,7 @@ class VerticalList extends StatelessWidget {
                   ),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage('assets/images/test.jpeg'),
+                    image: NetworkImage(bestMovieList[index].imageUrl),
                   ),
                 ),
               ),
@@ -30,7 +34,7 @@ class VerticalList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Another Nice Plant',
+                      bestMovieList[index].title,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
@@ -41,8 +45,7 @@ class VerticalList extends StatelessWidget {
                     ),
                     Container(
                       width: 240.0,
-                      child: Text(
-                          'Plants are green, they give us oxygen  and generally look pretty nice.'),
+                      child: Text(bestMovieList[index].description),
                     )
                   ],
                 ),
