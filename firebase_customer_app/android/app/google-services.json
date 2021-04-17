@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "501660140785",
+    "project_id": "lovley-lashes",
+    "storage_bucket": "lovley-lashes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501660140785:android:1ef1065803e9dc7ea1d550",
+        "android_client_info": {
+          "package_name": "dawnrose.firebase_customer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "501660140785-pr7h5m4ikv13bg8cvig6nju7on184btl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7JJ3XlMBy1DhOvCPLh0Tf-2V6-VyJgzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "501660140785-pr7h5m4ikv13bg8cvig6nju7on184btl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
