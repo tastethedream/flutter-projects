@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "601979996262",
+    "project_id": "brew-crew-tutorial-dd7d0",
+    "storage_bucket": "brew-crew-tutorial-dd7d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601979996262:android:4d534e98464637f33a05a7",
+        "android_client_info": {
+          "package_name": "com.drose.brew_crew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601979996262-o4kmfmfhrom733b8ecov4haotqbpc48m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_Xs8QmYtOiN-7mdg70QhV_fcj0p02Y3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601979996262-o4kmfmfhrom733b8ecov4haotqbpc48m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
