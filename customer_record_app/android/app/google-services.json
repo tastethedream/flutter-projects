@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "766403931328",
+    "project_id": "customer-records-22bdf",
+    "storage_bucket": "customer-records-22bdf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766403931328:android:46675648fad39d17669125",
+        "android_client_info": {
+          "package_name": "com.rose_record_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766403931328-agi537n89un0ctg6cis6uid3th8ocfk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCB-13LIXRAPh7XPJ9O7CkfjC4jD04Fuc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766403931328-agi537n89un0ctg6cis6uid3th8ocfk3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
