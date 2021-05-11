@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
 
+  final Function toggleView;
+  SignIn({this.toggleView});
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -24,6 +27,16 @@ class SignIn extends StatefulWidget {
         backgroundColor: Colors.pink[300],
         elevation: 0.0,
         title: Text('Sign in to Brat Lash'),
+        actions: [
+          FlatButton.icon(
+            icon: Icon(Icons.person, color: Colors.white,),
+            label: Text('Register', style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              widget.toggleView();
+            },
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),

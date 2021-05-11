@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
 
+  final Function toggleView;
+  Register({this.toggleView});
+
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -16,7 +19,7 @@ class _RegisterState extends State<Register> {
   String name = '';
   String email = '';
   String password = '';
-
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,16 @@ class _RegisterState extends State<Register> {
           backgroundColor: Colors.pink[300],
           elevation: 0.0,
           title: Text('Sign up to Brat Lash'),
+          actions: [
+        FlatButton.icon(
+        icon: Icon(Icons.person, color: Colors.white,),
+      label: Text('Sign In', style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+          widget.toggleView();
+      },
+    )
+    ]
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -70,11 +83,14 @@ class _RegisterState extends State<Register> {
                         ),
                         onPressed: () async {
                           if(_formKey.currentState.validate()){
-                            print(name);
-                            print(email);
-                            print(password);
+                            dynamic result = await _auth.regEmailPassword(email, password, name);
+                            if(result == null) {
+                              setState(() => error = 'Please provide correct details to register');
+
+                              }
+                            }
                           }
-                        }
+
                     )
 
                   ],
