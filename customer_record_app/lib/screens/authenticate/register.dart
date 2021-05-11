@@ -1,5 +1,7 @@
 import 'package:customer_record_app/services/auth.dart';
+import 'package:customer_record_app/shared/constants.dart';
 import 'package:flutter/material.dart';
+
 
 class Register extends StatefulWidget {
 
@@ -29,7 +31,7 @@ class _RegisterState extends State<Register> {
         appBar: AppBar(
           backgroundColor: Colors.pink[300],
           elevation: 0.0,
-          title: Text('Sign up to Brat Lash'),
+          title: Text('Sign up to My App'),
           actions: [
         FlatButton.icon(
         icon: Icon(Icons.person, color: Colors.white,),
@@ -50,6 +52,7 @@ class _RegisterState extends State<Register> {
                   children: [
                     SizedBox(height: 20.0),
                     TextFormField(
+                      decoration: textInputDecoration.copyWith(hintText: 'User Name'),
                         validator: (val) => val.isEmpty ? 'Please enter your name' : null,
                         onChanged: (val) {
                           setState(() => name = val);
@@ -59,6 +62,7 @@ class _RegisterState extends State<Register> {
 
                     SizedBox(height: 20.0),
                     TextFormField(
+                        decoration: textInputDecoration.copyWith(hintText:  'Email'),
                         validator: (val) => val.isEmpty ? 'Please enter your email' : null,
                         onChanged: (val) {
                           setState(() => email = val);
@@ -68,6 +72,7 @@ class _RegisterState extends State<Register> {
 
                     SizedBox(height: 20.0),
                     TextFormField(
+                      decoration: textInputDecoration.copyWith(hintText: 'Password'),
                       validator: (val) => val.length < 6 ? 'Please enter a password with 6 or more chars ' : null,
                       obscureText: true,
                       onChanged: (val) {
@@ -83,14 +88,18 @@ class _RegisterState extends State<Register> {
                         ),
                         onPressed: () async {
                           if(_formKey.currentState.validate()){
-                            dynamic result = await _auth.regEmailPassword(email, password, name);
+                            dynamic result = await _auth.registerWithEmailAndPassword(email, password);
                             if(result == null) {
                               setState(() => error = 'Please provide correct details to register');
-
                               }
                             }
                           }
 
+                    ),
+                    SizedBox(height: 20.0),
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0 ),
                     )
 
                   ],

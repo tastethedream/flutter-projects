@@ -1,4 +1,5 @@
 import 'package:customer_record_app/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -10,15 +11,17 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.pink[50],
       appBar: AppBar(
-        title: Text('Brat Lash'),
+        title: Text('My App'),
         backgroundColor: Colors.pink[300],
         elevation: 0.0,
         actions: [
-          FlatButton.icon(onPressed: () async {
-            //await _auth.signOut();
-          },
+          FlatButton.icon(
               icon: Icon(Icons.person, color: Colors.white,),
-              label: Text('Logout', style: TextStyle(color: Colors.white),))
+              label: Text('Logout', style: TextStyle(color: Colors.white),),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
+          ),
         ],
       ),
     );
