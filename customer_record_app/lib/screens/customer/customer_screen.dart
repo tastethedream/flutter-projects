@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:customer_record_app/models/customer.dart';
 import 'package:customer_record_app/screens/customer/customer_list.dart';
-import 'package:customer_record_app/screens/customer/newCustomer.dart';
+import 'package:customer_record_app/screens/customer/new_customer.dart';
 import 'package:customer_record_app/services/auth.dart';
 import 'package:customer_record_app/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_record_app/models/user.dart';
+
 import 'package:provider/provider.dart';
 
 
@@ -15,7 +15,7 @@ class CustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot>.value(
+    return StreamProvider<List<Customer>>.value(
       value: DatabaseService().customers,
       child: Scaffold(
         backgroundColor: Colors.pink[50],

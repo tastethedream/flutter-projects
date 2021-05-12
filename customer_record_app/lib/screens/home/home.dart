@@ -1,4 +1,4 @@
-import 'package:customer_record_app/screens/customer/newCustomer.dart';
+import 'package:customer_record_app/screens/customer/new_customer.dart';
 import 'package:customer_record_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
