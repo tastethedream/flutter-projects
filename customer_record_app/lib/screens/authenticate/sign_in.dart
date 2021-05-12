@@ -1,5 +1,6 @@
 import 'package:customer_record_app/services/auth.dart';
 import 'package:customer_record_app/shared/constants.dart';
+import 'package:customer_record_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -15,6 +16,7 @@ class SignIn extends StatefulWidget {
 
    final AuthService _auth = AuthService();
    final _formKey = GlobalKey<FormState>();
+   bool loading = false;
 
    // text field state
    String email = '';
@@ -24,7 +26,7 @@ class SignIn extends StatefulWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.pink[50],
       appBar: AppBar(
         backgroundColor: Colors.pink[300],
@@ -75,16 +77,18 @@ class SignIn extends StatefulWidget {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
+                        // show the loading screen when awaiting sign in
+                        setState(() => loading = true);
                         dynamic result = await _auth.signInWithEmailAndPassword(
                             email, password);
                         if (result == null) {
-                          setState(() =>
-                          error = 'Incorrect credentials');
+                          setState(()  {
+                            error = 'Incorrect credentials';
+                            loading = false;
+                          });
                         }
                       }
-                    }
-
-                ),
+                    }),
                 SizedBox(height: 20.0),
                 Text(
                   error,

@@ -1,5 +1,6 @@
 import 'package:customer_record_app/services/auth.dart';
 import 'package:customer_record_app/shared/constants.dart';
+import 'package:customer_record_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 
@@ -17,6 +18,7 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   //key for form validation
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String name = '';
   String email = '';
@@ -25,7 +27,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading(): Scaffold(
       
         backgroundColor: Colors.pink[50],
         appBar: AppBar(
@@ -88,9 +90,13 @@ class _RegisterState extends State<Register> {
                         ),
                         onPressed: () async {
                           if(_formKey.currentState.validate()){
+                            setState(() => loading = true);
                             dynamic result = await _auth.registerWithEmailAndPassword(email, password);
                             if(result == null) {
-                              setState(() => error = 'Please provide correct details to register');
+                              setState(() {
+                                error = 'Please provide correct details to register';
+                                loading = false;
+                                 });
                               }
                             }
                           }
