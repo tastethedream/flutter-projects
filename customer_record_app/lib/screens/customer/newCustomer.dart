@@ -1,3 +1,4 @@
+import 'package:customer_record_app/screens/customer/customer_screen.dart';
 import 'package:customer_record_app/services/database.dart';
 import 'package:customer_record_app/shared/constants.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,11 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        await DatabaseService().createCustomerRecord('Sue Smith', 'sue@sue.com', '0700 123456');
+                        await DatabaseService().createCustomerRecord('Sue Smith', 'sue@sue.com', '0700 123456', 0);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CustomerScreen())
+                        );
                        /* if(_formKey.currentState.validate()){
                           setState(() => loading = true);
                           dynamic result = await _auth.registerWithEmailAndPassword(email, password);
