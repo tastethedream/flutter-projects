@@ -1,3 +1,4 @@
+import 'package:customer_record_app/services/database.dart';
 import 'package:customer_record_app/shared/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -47,9 +48,9 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                   SizedBox(height: 20.0),
                   TextFormField(
                     decoration: textInputDecoration.copyWith(hintText: 'Mobile number'),
-                    validator: (val) => val.length < 6 ? 'Please enter a contact telephone' : null,
+                    validator: (val) => val.length < 11 ? 'Please enter a contact telephone' : null,
                     onChanged: (val) {
-                      //setState(() => password = val);
+                      //setState(() => mobileNumber = val);
                     },
                   ),
                   SizedBox(height: 20.0),
@@ -60,6 +61,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
+                        await DatabaseService().createCustomerRecord('Sue Smith', 'sue@sue.com', '0700 123456');
                        /* if(_formKey.currentState.validate()){
                           setState(() => loading = true);
                           dynamic result = await _auth.registerWithEmailAndPassword(email, password);
