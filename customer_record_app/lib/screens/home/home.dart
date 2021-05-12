@@ -1,3 +1,4 @@
+import 'package:customer_record_app/screens/customer/newCustomer.dart';
 import 'package:customer_record_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,29 @@ class Home extends StatelessWidget {
             },
           ),
         ],
+      ),
+      body: Center(
+        child: RaisedButton.icon(
+          color: Colors.pink[300],
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddNewCustomer())
+            );
+          },
+          icon: Icon(
+            Icons.add, color: Colors.white,
+          ),
+
+          label: Text(
+            'Add a new Customer',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+
+
+
+
       ),
     );
   }
