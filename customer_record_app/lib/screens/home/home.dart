@@ -1,3 +1,4 @@
+import 'package:customer_record_app/screens/customer/amend_customer.dart';
 import 'package:customer_record_app/screens/customer/new_customer.dart';
 import 'package:customer_record_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -64,7 +65,7 @@ class Home extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AddNewCustomer())
+                          MaterialPageRoute(builder: (context) => AmendCustomer())
                       );
                     },
                     icon: Icon(
@@ -72,31 +73,11 @@ class Home extends StatelessWidget {
                     ),
 
                     label: Text(
-                      'Edit Customer Details',
+                      'Amend Customer Details',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(height: 30.0),
-                  RaisedButton.icon(
-                    padding: EdgeInsets.all(20.0),
-                    color: Colors.pink[300],
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular (50.0)),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => AddNewCustomer())
-                      );
-                    },
-                    icon: Icon(
-                      Icons.favorite_rounded, color: Colors.white,
-                    ),
 
-                    label: Text(
-                      'Loyalty Scheme',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
 
                 ],
           ),
