@@ -1,12 +1,12 @@
-import 'package:customer_record_app/screens/customer/amend_customer.dart';
+
+import 'package:customer_record_app/screens/customer/customer_screen.dart';
 import 'package:customer_record_app/screens/customer/new_customer.dart';
-import 'package:customer_record_app/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:customer_record_app/models/user.dart';
+
 class Home extends StatelessWidget {
 
-  final AuthService _auth = AuthService();
+  //final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class Home extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AmendCustomer())
+                          MaterialPageRoute(builder: (context) => CustomerScreen())
                       );
                     },
                     icon: Icon(

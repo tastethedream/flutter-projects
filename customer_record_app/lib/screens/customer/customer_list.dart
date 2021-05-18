@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'customer_tile.dart';
 
 class CustomerList extends StatefulWidget {
-  const CustomerList({Key key}) : super(key: key);
 
   @override
   _CustomerListState createState() => _CustomerListState();
@@ -16,12 +15,11 @@ class _CustomerListState extends State<CustomerList> {
   Widget build(BuildContext context) {
 
     final customers = Provider.of<List<Customer>>(context);
-    //print(customers.documents);
-   customers.forEach((customer) {
-     print(customer.name);
-     print(customer.email);
-     print(customer.mobile);
-     print(customer.appointments);
+     customers.forEach((customer) {
+      print(customer.name);
+      print(customer.email);
+      print(customer.mobile);
+      print(customer.appointments);
    });
 
     return ListView.builder(
