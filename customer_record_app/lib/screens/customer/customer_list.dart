@@ -14,7 +14,7 @@ class _CustomerListState extends State<CustomerList> {
   @override
   Widget build(BuildContext context) {
 
-    final customers = Provider.of<List<Customer>>(context);
+    final customers = Provider.of<List<Customer>>(context) ;
      customers.forEach((customer) {
       print(customer.name);
       print(customer.email);

@@ -1,19 +1,30 @@
 import 'package:customer_record_app/screens/customer/customer_screen.dart';
 import 'package:customer_record_app/services/database.dart';
 import 'package:customer_record_app/shared/constants.dart';
+import 'package:customer_record_app/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class AddNewCustomer extends StatefulWidget {
 
   @override
+
   _AddNewCustomerState createState() => _AddNewCustomerState();
 }
 
 class _AddNewCustomerState extends State<AddNewCustomer> {
+
+  final _formKey = GlobalKey<FormState>();
+  bool loading = false;
+
+  // text field state
+  String name = '';
+  String email = '';
+  String mobile= '';
+  String appointments = '';
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.pink[50],
       appBar: AppBar(
           backgroundColor: Colors.pink[300],
@@ -25,7 +36,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
         child: Container(
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
             child: Form(
-              //key: _formKey,
+              key: _formKey,
               child: Column(
                 children: [
                   SizedBox(height: 20.0),
@@ -33,7 +44,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                       decoration: textInputDecoration.copyWith(hintText: 'Name'),
                       validator: (val) => val.isEmpty ? 'Please enter customers name' : null,
                       onChanged: (val) {
-                       // setState(() => name = val);
+                        setState(() => name = val);
                       }
                   ),
 
@@ -42,7 +53,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                       decoration: textInputDecoration.copyWith(hintText:  'Email'),
                       validator: (val) => val.isEmpty ? 'Please enter customer email' : null,
                       onChanged: (val) {
-                        //setState(() => email = val);
+                        setState(() => email = val);
                       }
                   ),
 
@@ -51,7 +62,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                     decoration: textInputDecoration.copyWith(hintText: 'Mobile number'),
                     validator: (val) => val.length < 6 ? 'Please enter a contact telephone' : null,
                     onChanged: (val) {
-                      //setState(() => mobileNumber = val);
+                      setState(() => mobile = val);
                     },
                   ),
                   SizedBox(height: 20.0),
@@ -62,20 +73,17 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        await DatabaseService().createCustomerRecord('Sue Smith', 'sue@sue.com', '0700123456', '1');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CustomerScreen())
-                        );
-                       /* if(_formKey.currentState.validate()){
+                        if(_formKey.currentState.validate()){
                           setState(() => loading = true);
-                          dynamic result = await _auth.registerWithEmailAndPassword(email, password);
-                          if(result == null) {
-                            setState(() {
-                              error = 'Please provide correct details to register';
-                              loading = false;
-                            });
-                          }*/
+
+
+                          //dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                          //if(result == null) {
+                            //setState(() {
+                              //error = 'Please provide correct details to register';
+                              //loading = false;
+                           // });
+                          }
                         }
 
 
@@ -95,3 +103,7 @@ class _AddNewCustomerState extends State<AddNewCustomer> {
     );
   }
 }
+//await DatabaseService().createCustomerRecord('Sue Smith', 'sue@sue.com', '0700123456', '1');
+//Navigator.push(
+//context,
+//MaterialPageRoute(builder: (context) => CustomerScreen())

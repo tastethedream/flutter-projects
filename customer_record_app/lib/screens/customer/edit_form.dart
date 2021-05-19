@@ -11,7 +11,7 @@ class EditForm extends StatefulWidget {
 class _EditFormState extends State<EditForm> {
 
   final _formKey = GlobalKey<FormState>();
-  final List<String> appointments = ['0', '1', '2', '3', '4', '5' ];
+  final List<String> appointments = ['0', '1', '2', '3', '4', '5'];
 
 // form values
 
@@ -40,14 +40,14 @@ class _EditFormState extends State<EditForm> {
           SizedBox(height: 20.0),
           //dropdown
           DropdownButtonFormField(
-                decoration: textInputDecoration,
-                value: _currentAppointments ?? '0',
-                items: appointments.map((appointment) {
-                return DropdownMenuItem(
-                  value: appointment,
-                  child: Text('$appointment appointments'),
-                );
-              }).toList(),
+            decoration: textInputDecoration,
+            value: _currentAppointments ?? '0',
+            items: appointments.map((appointment) {
+              return DropdownMenuItem(
+                value: appointment,
+                child: Text('$appointment appointments'),
+              );
+            }).toList(),
             onChanged: (val) => setState(() => _currentAppointments = val),
           ),
           //textformfield
@@ -68,22 +68,19 @@ class _EditFormState extends State<EditForm> {
           SizedBox(height: 20.0),
           //button
           RaisedButton(
-            color: Colors.pink[400],
+              color: Colors.pink[400],
               child: Text(
                 'Update',
                 style: TextStyle(color: Colors.white),
               ),
-                onPressed: () async {
-                  print(_currentName);
-                  print(_currentAppointments);
-                  print(_currentEmail);
-                  print(_currentMobile);
+              onPressed: () async {
+                print(_currentName);
+                print(_currentAppointments);
+                print(_currentEmail);
+                print(_currentMobile);
+              }
 
-                }
-
-              ),
-
-
+          ),
 
 
         ],

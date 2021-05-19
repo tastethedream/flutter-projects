@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2c8cb126-e90c-4b87-901d-c372c837fba2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/build-native-apps/udacity-course" beforeDir="false" afterPath="$PROJECT_DIR$/build-native-apps/udacity-course" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/slider_carousel/lib/widgets/slide_dots.dart" beforeDir="false" afterPath="$PROJECT_DIR$/slider_carousel/lib/widgets/slide_dots.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_app/lib/models/channel_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/video_app/lib/models/channel_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_app/lib/models/video_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/video_app/lib/models/video_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_app/lib/screens/home_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/video_app/lib/screens/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_app/lib/screens/video_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/video_app/lib/screens/video_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_app/lib/services/api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/video_app/lib/services/api_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_app/lib/utilities/keys.dart" beforeDir="false" afterPath="$PROJECT_DIR$/video_app/lib/utilities/keys.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1sKveOWzp1skx81Ju4kl6LOKSNR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2c8cb126-e90c-4b87-901d-c372c837fba2" name="Default Changelist" comment="" />
+      <created>1620634207805</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1620634207805</updated>
+    </task>
+    <servers />
+  </component>
+</project>
