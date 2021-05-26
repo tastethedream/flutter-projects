@@ -2,30 +2,31 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:sports_api/screens/clubScreen.dart';
 
 
 
-class TableScreen extends StatefulWidget {
+class ClubScreen extends StatefulWidget {
+
+  // in table screen this 'code' is hard coded need to make this the selected team from the table
   final String code;
 
-  const TableScreen({Key key, this.code}) : super(key: key);
+  const ClubScreen({Key key, this.code}) : super(key: key);
   @override
-  _TableScreenState createState() => _TableScreenState();
+  _ClubScreenState createState() => _ClubScreenState();
 }
 
-class _TableScreenState extends State<TableScreen> {
-  List _table;
+class _ClubScreenState extends State<ClubScreen> {
+  List _team;
 
   getTable() async {
     http.Response response = await http.get(
-        'https://api.football-data.org/v2/competitions/${widget.code}/standings',
+        'https://api.football-data.org/v2/competitions/PL/standings',
         headers: {'X-Auth-Token': 'api key here'});
     String body = response.body;
     Map data = jsonDecode(body);
-    List table = data['standings'][0]['table'];
+    List team = data['standings'][0]['table'];
     setState(() {
-      _table = table;
+      _team = team;
     });
 
 
@@ -35,7 +36,7 @@ class _TableScreenState extends State<TableScreen> {
 
   Widget buildTable() {
     List<Widget> teams = [];
-    for (var team in _table) {
+    for (var team in _team) {
       teams.add(
         Padding(
           padding: const EdgeInsets.all(10),
@@ -49,10 +50,10 @@ class _TableScreenState extends State<TableScreen> {
                         : Text(" " + team['position'].toString() + ' - '),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => ClubScreen(),
+                        //Navigator.push(context, MaterialPageRoute(
+                          //builder: (context) => DetailScreen(),
 
-                        ));
+                        //));
                         //print(team);
                       },
                       child: Row(
@@ -106,7 +107,7 @@ class _TableScreenState extends State<TableScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _table == null
+    return _team == null
         ? Container(
       color: Colors.white,
       child: Center(
@@ -118,20 +119,20 @@ class _TableScreenState extends State<TableScreen> {
       ),
     )
         : Scaffold(
-            appBar: AppBar(
-              title: Text(
-                  'League Table'),
-              centerTitle: true,
-              backgroundColor: Color(0xff33ccff),
-              elevation: 50.0,
-            ),
+      appBar: AppBar(
+        title: Text(
+            'Team Details'),
+        centerTitle: true,
+        backgroundColor: Color(0xff33ccff),
+        elevation: 50.0,
+      ),
 
-            body: Container(
-              decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  const Color(0xff33ccff),
-                  const Color(0xff007399),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xff33ccff),
+                const Color(0xff007399),
               ],
               begin: const FractionalOffset(0.0, 0.0),
               end: const FractionalOffset(0.0, 1.0),

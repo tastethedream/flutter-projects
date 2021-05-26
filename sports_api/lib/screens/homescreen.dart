@@ -19,8 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
           
           decoration: BoxDecoration(
               image: DecorationImage(
-              //image: NetworkImage('https://images.unsplash.com/photo-1517747614396-d21a78b850e8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=882&q=80'),
-                image: NetworkImage('https://images.unsplash.com/photo-1565308674684-1d8c0b4433d2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80'),
+              //image: NetworkImage('https://images.unsplash.com/photo-1610017128786-4a25f0f7756c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80'),
+                image: NetworkImage('https://images.unsplash.com/photo-1511426463457-0571e247d816?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80'),
                 fit: BoxFit.cover,
     ),
              // gradient: LinearGradient(
@@ -52,12 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
 
-                SizedBox(height: 20.0),
+                SizedBox(height: 30.0),
                 GridView.count(
                     crossAxisCount: 2,
                     shrinkWrap: true,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 45,
+                  mainAxisSpacing: 45,
                   children: [
                     GestureDetector(
                       child: LeagueContainer(image:"assets/pl.png"),
