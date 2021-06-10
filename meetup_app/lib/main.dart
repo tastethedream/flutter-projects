@@ -1,14 +1,15 @@
+
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_core/firebase_core.dart'; // new
-import 'package:firebase_auth/firebase_auth.dart'; // new
-import 'package:provider/provider.dart';           // new
-import 'src/authentication.dart';                  // new
+import 'package:provider/provider.dart';
+
+import 'src/authentication.dart';
 import 'src/widgets.dart';
-import 'dart:async';                                    // new
-import 'package:cloud_firestore/cloud_firestore.dart';  // new
-
-
 
 void main() {
   runApp(
@@ -26,8 +27,8 @@ class App extends StatelessWidget {
       title: 'Firebase Meetup',
       theme: ThemeData(
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
-              highlightColor: Colors.deepPurple,
-            ),
+          highlightColor: Colors.deepPurple,
+        ),
         primarySwatch: Colors.deepPurple,
         textTheme: GoogleFonts.robotoTextTheme(
           Theme.of(context).textTheme,
@@ -66,7 +67,6 @@ class HomePage extends StatelessWidget {
               signOut: appState.signOut,
             ),
           ),
-
           Divider(
             height: 8,
             thickness: 1,
@@ -82,13 +82,26 @@ class HomePage extends StatelessWidget {
             builder: (context, appState, _) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Add from here
+                if (appState.attendees >= 2)
+                  Paragraph('${appState.attendees} people going')
+                else if (appState.attendees == 1)
+                  Paragraph('1 person going')
+                else
+                  Paragraph('No one going'),
+                // To here.
                 if (appState.loginState == ApplicationLoginState.loggedIn) ...[
+                  // Add from here
+                  YesNoSelection(
+                    state: appState.attending,
+                    onSelection: (attending) => appState.attending = attending,
+                  ),
+                  // To here.
                   Header('Discussion'),
                   GuestBook(
-                    // adds message to database
                     addMessage: (String message) =>
                         appState.addMessageToGuestBook(message),
-                        messages: appState.guestBookMessages,
+                    messages: appState.guestBookMessages,
                   ),
                 ],
               ],
@@ -100,9 +113,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-
-//refactor here and move to its own file
-
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
@@ -110,6 +120,17 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> init() async {
     await Firebase.initializeApp();
+
+    // Add from here
+    FirebaseFirestore.instance
+        .collection('attendees')
+        .where('attending', isEqualTo: true)
+        .snapshots()
+        .listen((snapshot) {
+      _attendees = snapshot.docs.length;
+      notifyListeners();
+    });
+    // To here
 
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
@@ -130,17 +151,35 @@ class ApplicationState extends ChangeNotifier {
           });
           notifyListeners();
         });
+        // Add from here
+        _attendingSubscription = FirebaseFirestore.instance
+            .collection('attendees')
+            .doc(user.uid)
+            .snapshots()
+            .listen((snapshot) {
+          if (snapshot.data() != null) {
+            if (snapshot.data()!['attending']) {
+              _attending = Attending.yes;
+            } else {
+              _attending = Attending.no;
+            }
+          } else {
+            _attending = Attending.unknown;
+          }
+          notifyListeners();
+        });
+        // to here
       } else {
         _loginState = ApplicationLoginState.loggedOut;
         _guestBookMessages = [];
         _guestBookSubscription?.cancel();
+        _attendingSubscription?.cancel(); // new
       }
       notifyListeners();
     });
   }
 
   ApplicationLoginState _loginState = ApplicationLoginState.loggedOut;
-
   ApplicationLoginState get loginState => _loginState;
 
   String? _email;
@@ -150,13 +189,32 @@ class ApplicationState extends ChangeNotifier {
   List<GuestBookMessage> _guestBookMessages = [];
   List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
+  int _attendees = 0;
+  int get attendees => _attendees;
+
+  Attending _attending = Attending.unknown;
+  StreamSubscription<DocumentSnapshot>? _attendingSubscription;
+  Attending get attending => _attending;
+  set attending(Attending attending) {
+    final userDoc = FirebaseFirestore.instance
+        .collection('attendees')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    if (attending == Attending.yes) {
+      userDoc.set({'attending': true});
+    } else {
+      userDoc.set({'attending': false});
+    }
+  }
+
   void startLoginFlow() {
     _loginState = ApplicationLoginState.emailAddress;
     notifyListeners();
   }
 
-  void verifyEmail(String email,
-      void Function(FirebaseAuthException e) errorCallback,) async {
+  void verifyEmail(
+      String email,
+      void Function(FirebaseAuthException e) errorCallback,
+      ) async {
     try {
       var methods =
       await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
@@ -172,10 +230,11 @@ class ApplicationState extends ChangeNotifier {
     }
   }
 
-
-  void signInWithEmailAndPassword(String email,
+  void signInWithEmailAndPassword(
+      String email,
       String password,
-      void Function(FirebaseAuthException e) errorCallback,) async {
+      void Function(FirebaseAuthException e) errorCallback,
+      ) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -206,8 +265,6 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.signOut();
   }
 
-  // allow the app to talk to firestore
-
   Future<DocumentReference> addMessageToGuestBook(String message) {
     if (_loginState != ApplicationLoginState.loggedIn) {
       throw Exception('Must be logged in');
@@ -215,24 +272,20 @@ class ApplicationState extends ChangeNotifier {
 
     return FirebaseFirestore.instance.collection('guestbook').add({
       'text': message,
-      'timestamp': DateTime
-          .now()
-          .millisecondsSinceEpoch,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'userId': FirebaseAuth.instance.currentUser!.uid,
     });
   }
 }
 
-
-
-//again refactor and give its own file
-
 class GuestBookMessage {
   GuestBookMessage({required this.name, required this.message});
   final String name;
   final String message;
 }
+
+enum Attending { yes, no, unknown }
 
 class GuestBook extends StatefulWidget {
   GuestBook({required this.addMessage, required this.messages});
@@ -250,54 +303,118 @@ class _GuestBookState extends State<GuestBook> {
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Form(
-        key: _formKey,
-        child: Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                controller: _controller,
-                decoration: const InputDecoration(
-                  hintText: 'Leave a message',
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: 'Leave a message',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter your message to continue';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Enter your message to continue';
-                  }
-                  return null;
-                },
-              ),
+                SizedBox(width: 8),
+                StyledButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      await widget.addMessage(_controller.text);
+                      _controller.clear();
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.send),
+                      SizedBox(width: 4),
+                      Text('SEND'),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 8),
-            StyledButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  await widget.addMessage(_controller.text);
-                  _controller.clear();
-                }
-              },
-              child: Row(
-                children: [
-                  Icon(Icons.send),
-                  SizedBox(width: 4),
-                  Text('SEND'),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-    ),
-            SizedBox(height: 8),
-            for (var message in widget.messages)
-              Paragraph('${message.name}: ${message.message}'),
-            SizedBox(height: 8),
+        SizedBox(height: 8),
+        for (var message in widget.messages)
+          Paragraph('${message.name}: ${message.message}'),
+        SizedBox(height: 8),
+      ],
+    );
+  }
+}
 
+class YesNoSelection extends StatelessWidget {
+  const YesNoSelection({required this.state, required this.onSelection});
+  final Attending state;
+  final void Function(Attending selection) onSelection;
 
-          ]);
+  @override
+  Widget build(BuildContext context) {
+    switch (state) {
+      case Attending.yes:
+        return Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(elevation: 0),
+                onPressed: () => onSelection(Attending.yes),
+                child: Text('YES'),
+              ),
+              SizedBox(width: 8),
+              TextButton(
+                onPressed: () => onSelection(Attending.no),
+                child: Text('NO'),
+              ),
+            ],
+          ),
+        );
+      case Attending.no:
+        return Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              TextButton(
+                onPressed: () => onSelection(Attending.yes),
+                child: Text('YES'),
+              ),
+              SizedBox(width: 8),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(elevation: 0),
+                onPressed: () => onSelection(Attending.no),
+                child: Text('NO'),
+              ),
+            ],
+          ),
+        );
+      default:
+        return Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              StyledButton(
+                onPressed: () => onSelection(Attending.yes),
+                child: Text('YES'),
+              ),
+              SizedBox(width: 8),
+              StyledButton(
+                onPressed: () => onSelection(Attending.no),
+                child: Text('NO'),
+              ),
+            ],
+          ),
+        );
+    }
   }
 }
