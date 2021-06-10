@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_config/flutter_config.dart';
 
 
 class ClubScreen extends StatefulWidget {
 
   // in table screen this 'code' is hard coded need to make this the selected team from the table
-  final String code;
+  //final String code;
 
-  const ClubScreen({Key key, this.code}) : super(key: key);
+  //const ClubScreen({Key key, this.code}) : super(key: key);
   @override
   _ClubScreenState createState() => _ClubScreenState();
 }
@@ -21,7 +21,7 @@ class _ClubScreenState extends State<ClubScreen> {
   getTable() async {
     http.Response response = await http.get(
         'https://api.football-data.org/v2/competitions/PL/standings',
-        headers: {'X-Auth-Token': 'api key here'});
+        headers: {'X-Auth-Token': FlutterConfig.get('API_KEY')});
     String body = response.body;
     Map data = jsonDecode(body);
     List team = data['standings'][0]['table'];
@@ -54,7 +54,7 @@ class _ClubScreenState extends State<ClubScreen> {
                           //builder: (context) => DetailScreen(),
 
                         //));
-                        //print(team);
+                        print(team);
                       },
                       child: Row(
                         children: [
@@ -103,6 +103,7 @@ class _ClubScreenState extends State<ClubScreen> {
   void initState() {
     super.initState();
     getTable();
+
   }
 
   @override
