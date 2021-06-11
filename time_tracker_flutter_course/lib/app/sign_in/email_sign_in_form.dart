@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:time_tracker_flutter_course/app/sign_in/validator.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/widgets/form_submit_button.dart';
 
 
 enum EmailSignInFormType {signIn, register}
 
-class EmailSignInForm extends StatefulWidget {
+class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {
   EmailSignInForm({@required this.auth});
   final AuthBase auth;
 
@@ -60,7 +61,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     'Sign In' : 'Create an account';
     final secondaryText = _formType == EmailSignInFormType.signIn ?
     'Need an account? Register' : 'Have an account? Sign in';
-    bool submitEnabled = _email.isNotEmpty && _password.isNotEmpty;
+    bool submitEnabled =
+        widget.emailValidator.isValid(_email) && widget.passwordValidator.isValid(_password);
+
 
     return [
       _buildEmailTextField(),
@@ -79,11 +82,13 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   TextField _buildPasswordTextField() {
+    bool passwordValid = widget.passwordValidator.isValid(_password);
     return TextField(
       controller: _passwordController,
       focusNode: _passwordFocusNode,
       decoration: InputDecoration(
         labelText: 'Password',
+        errorText: passwordValid ? null : widget.invalidPasswordErrorText
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,
@@ -93,11 +98,12 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   TextField _buildEmailTextField() {
+    bool emailValid = widget.emailValidator.isValid(_email);
     return TextField(
       controller: _emailController,
       focusNode: _emailFocusNode,
       decoration:
-      InputDecoration(labelText: 'Email', hintText: 'test@test.com'),
+      InputDecoration(labelText: 'Email', hintText: 'test@test.com', errorText: emailValid ? null : widget.invalidEmailErrorText),
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
@@ -119,7 +125,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _updateState() {
-    
+
     setState(() {});
   }
 }
