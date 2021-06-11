@@ -21,11 +21,12 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
 
   String get _email => _emailController.text;
+
   String get _password => _passwordController.text;
 
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
 
-  void _submit() async{
+  void _submit() async {
     try {
       if (_formType == EmailSignInFormType.signIn) {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
@@ -37,6 +38,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       print(e.toString());
     }
   }
+
 // complete editing in the email field and move to the password field
   void _emailEditingComplete() {
     FocusScope.of(context).requestFocus(_passwordFocusNode);
@@ -47,7 +49,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   void _toggleFormType() {
     setState(() {
       _formType = _formType == EmailSignInFormType.signIn ?
-          EmailSignInFormType.register : EmailSignInFormType.signIn;
+      EmailSignInFormType.register : EmailSignInFormType.signIn;
     });
     _emailController.clear();
     _passwordController.clear();
@@ -55,22 +57,24 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   List<Widget> _buildChildren() {
     final primaryText = _formType == EmailSignInFormType.signIn ?
-        'Sign In' : 'Create an account';
+    'Sign In' : 'Create an account';
     final secondaryText = _formType == EmailSignInFormType.signIn ?
-        'Need an account? Register' : 'Have an account? Sign in';
+    'Need an account? Register' : 'Have an account? Sign in';
+    bool submitEnabled = _email.isNotEmpty && _password.isNotEmpty;
+
     return [
       _buildEmailTextField(),
       SizedBox(height: 8.0),
       _buildPasswordTextField(),
       SizedBox(height: 8.0),
       FormSubmitButton(
-       text:  primaryText,
-        onPressed: _submit,
+        text: primaryText,
+        onPressed: submitEnabled ? _submit : null,
       ),
       SizedBox(height: 8.0),
       FlatButton(
           onPressed: _toggleFormType,
-          child: Text (secondaryText))
+          child: Text(secondaryText))
     ];
   }
 
@@ -83,6 +87,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,
+      onChanged: (password) => _updateState(),
       onEditingComplete: _submit,
     );
   }
@@ -96,6 +101,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
+      onChanged: (email) => _updateState,
       onEditingComplete: _emailEditingComplete,
     );
   }
@@ -110,5 +116,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         children: _buildChildren(),
       ),
     );
+  }
+
+  void _updateState() {
+    
+    setState(() {});
   }
 }
