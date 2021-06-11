@@ -15,8 +15,11 @@ class EmailSignInForm extends StatefulWidget {
 
 class _EmailSignInFormState extends State<EmailSignInForm> {
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
+
   String get _email => _emailController.text;
   String get _password => _passwordController.text;
 
@@ -33,8 +36,13 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     } catch (e) {
       print(e.toString());
     }
-
   }
+// complete editing in the email field and move to the password field
+  void _emailEditingComplete() {
+    FocusScope.of(context).requestFocus(_passwordFocusNode);
+  }
+
+
   //toggle between sign in and register
   void _toggleFormType() {
     setState(() {
@@ -69,22 +77,26 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   TextField _buildPasswordTextField() {
     return TextField(
       controller: _passwordController,
+      focusNode: _passwordFocusNode,
       decoration: InputDecoration(
         labelText: 'Password',
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,
+      onEditingComplete: _submit,
     );
   }
 
   TextField _buildEmailTextField() {
     return TextField(
       controller: _emailController,
+      focusNode: _emailFocusNode,
       decoration:
       InputDecoration(labelText: 'Email', hintText: 'test@test.com'),
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
+      onEditingComplete: _emailEditingComplete,
     );
   }
 
