@@ -26,9 +26,9 @@ class SignInBloc {
       _setIsLoading(true);
       return await signInMethod();
     } catch (e) {
-      rethrow;
-    } finally {
       _setIsLoading(false);
+      rethrow;
+
     }
   }
   Future<User> signInAnonymously() async => _signIn(auth.signInAnonymously);
