@@ -5,17 +5,16 @@ import 'package:time_tracker_flutter_course/app/sign_in/validator.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/widgets/form_submit_button.dart';
 import 'package:time_tracker_flutter_course/widgets/show_exception_alert_dialog.dart';
+import 'email_sign_in_model.dart';
 
 
-enum EmailSignInFormType {signIn, register}
-
-class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidators {
+class EmailSignInFormStateful extends StatefulWidget with EmailAndPasswordValidators {
 
   @override
-  _EmailSignInFormState createState() => _EmailSignInFormState();
+  _EmailSignInFormStatefulState createState() => _EmailSignInFormStatefulState();
 }
 
-class _EmailSignInFormState extends State<EmailSignInForm> {
+class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode = FocusNode();
@@ -37,34 +36,33 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
    _passwordFocusNode.dispose();
     super.dispose();
   }
-  void _submit() async {
-    print('submit called');
+
+  Future <void> _submit() async {
     setState(() {
       _submitted = true;
       _isLoading = true;
     });
     try {
       final auth = Provider.of<AuthBase>(context, listen: false);
-
       if (_formType == EmailSignInFormType.signIn) {
         await auth.signInWithEmailAndPassword(_email, _password);
       } else {
         await auth.createUserWithEmailAndPassword(_email, _password);
       }
       Navigator.of(context).pop();
-    }  on FirebaseAuthException catch (e) {
-     showExceptionAlertDialog(
-       context,
-       title: ('Problem with sign in'),
-       exception: e,
-
-     );
+    } on FirebaseAuthException catch (e) {
+        showExceptionAlertDialog(
+            context,
+            title: 'Problem with Sign in',
+            exception: e,
+        );
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
   }
+
 
 // complete editing in the email field and move to the password field
   void _emailEditingComplete() {
