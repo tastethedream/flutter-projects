@@ -5,28 +5,19 @@ import 'package:time_tracker_flutter_course/services/auth.dart';
 
 // create class
 class SignInBloc {
-  SignInBloc({@required this.auth});
+  SignInBloc({@required this.auth, @required this.isLoading});
   final AuthBase auth;
+  final ValueNotifier<bool> isLoading;
 
-  final StreamController<bool> _isLoadingController = StreamController<bool>();
-  Stream<bool> get isLoadingStream => _isLoadingController.stream;
-
-//close the controller when the sign in page is removed from the widget tree
-  void dispose() {
-    _isLoadingController.close();
-  }
-
-  // method to add values to the stream
-  void _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);
 
 
   // Method to handle the different sign in methods
   Future<User> _signIn(Future<User> Function() signInMethod) async {
     try{
-      _setIsLoading(true);
+      isLoading.value = true;
       return await signInMethod();
     } catch (e) {
-      _setIsLoading(false);
+      isLoading.value = false;
       rethrow;
 
     }
