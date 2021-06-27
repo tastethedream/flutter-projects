@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker_flutter_course/app/home/models/job.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 import 'package:time_tracker_flutter_course/widgets/show_alert_dialog.dart';
+import 'package:time_tracker_flutter_course/widgets/show_exception_alert_dialog.dart';
 
 class JobsPage extends StatelessWidget {
 //Method for signing out
@@ -31,18 +34,28 @@ class JobsPage extends StatelessWidget {
     }
   }
 
- // get access to the database
+ // get access to the database and handle errors
   Future<void> _createJob(BuildContext context) async {
-    final database = Provider.of<Database>(context, listen: false);
-    //Create a job
-    await database.createJob({
-      'name': 'Blogging',
-      'ratePerHour': 10,
-    });
+    try {
+      final database = Provider.of<Database>(context, listen: false);
+      //Create a job
+      await database.createJob(Job(name: 'Blogging', ratePerHour: 10));
+    } on FirebaseException catch (e) {
+      showExceptionAlertDialog(
+        context,
+        title: 'Problem with database',
+        exception: e,
+      );
+
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    //TODO: Temp code to access the jobs in the database: delete me
+
+    final database = Provider.of<Database>(context, listen: false);
+    database.jobsStream();
     return Scaffold(
       appBar: AppBar(
         title: Text('Jobs'),
@@ -60,6 +73,7 @@ class JobsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        backgroundColor: Colors.indigo,
         onPressed: () => _createJob(context),
       ),
     );

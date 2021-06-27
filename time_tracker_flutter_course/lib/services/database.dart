@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:time_tracker_flutter_course/app/home/models/job.dart';
+import 'package:time_tracker_flutter_course/services/api_path.dart';
 
 abstract class Database {
-  Future<void> createJob(Map<String, dynamic> jobData);
+  Future<void> createJob(Job job);
+  Stream<List<Job>> jobsStream();
 
 }
 
@@ -10,12 +13,36 @@ class FirestoreDatabase implements Database {
   FirestoreDatabase({@required this.uid}) : assert(uid != null);
   final String uid;
 
-  Future<void> createJob(Map<String, dynamic> jobData) async {
-    //create a path that contains the location where we are going to write our firestore data to
-    final path = '/users/$uid/jobs/job_abc';
-    // Retrieve the document reference by accessing FirebaseFirestore.instance
-    final documentReference =  FirebaseFirestore.instance.doc(path);
-    // Write the data to the location pointed to by the document reference
-    await documentReference.set(jobData);
+
+// method to create new job
+  Future<void> createJob(Job job) => _setData(
+    path: APIPath.job(uid, 'job_abc'),
+    data: job.toMap(),
+  );
+
+  //method to access the jobs in the database using the map operator to turn a stream of snapshots into a list of jobs
+  Stream<List<Job>> jobsStream() {
+    final path = APIPath.jobs(uid);
+    final reference = FirebaseFirestore.instance.collection(path);
+    final snapshots = reference.snapshots();
+    return snapshots.map((snapshot) => snapshot.docs.map(
+            (snapshot) {
+              final data = snapshot.data();
+              return data != null ? Job(
+                name: data['name'],
+                ratePerHour: data['ratePerHour'],
+              ) : null;
+            },
+
+        ));
+  }
+  
+
+
+  //get the database reference from firestore and set the data for that reference
+  Future<void> _setData({String path, Map<String, dynamic> data }) async {
+    final reference = FirebaseFirestore.instance.doc(path);
+    print('$path: $data');
+    await reference.set(data);
   }
 }
