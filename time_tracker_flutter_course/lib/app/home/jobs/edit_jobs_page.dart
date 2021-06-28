@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -69,6 +71,10 @@ class _EditJobPageState extends State<EditJobPage> {
       final jobs = await widget.database.jobsStream().first;
       // get all the job names inside the list
       final allNames = jobs.map((job) => job.name).toList();
+      //allow user to keep same name when editing job
+      if(widget.job != null){
+        allNames.remove(widget.job.name);
+      }
       // ensure all job names are unique(not duplicated)
       if (allNames.contains(_name)) {
         showAlertDialog(
