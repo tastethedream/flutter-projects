@@ -78,8 +78,10 @@ class _EditJobPageState extends State<EditJobPage> {
             defaultActionText: 'Ok',
         );
       } else {
-        final job = Job(name: _name, ratePerHour: _ratePerHour);
-        await widget.database.createJob(job);
+        //does the document id already exist?
+        final id = widget.job?.id ?? documentIdFromCurrentDate();
+        final job = Job(id: id, name: _name, ratePerHour: _ratePerHour);
+        await widget.database.setJob(job);
         Navigator.of(context).pop();
       }
     } on FirebaseException catch (e){
