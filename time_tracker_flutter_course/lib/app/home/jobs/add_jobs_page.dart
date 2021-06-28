@@ -22,6 +22,51 @@ class _AddJobPageState extends State<AddJobPage> {
         elevation: 2.0,
         title: Text('New Job'),
       ),
+      body: _buildContents(),
+      backgroundColor: Colors.grey[200],
     );
+  }
+
+  Widget _buildContents() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _buildForm(),
+            ),
+
+          ),
+        ),
+
+    );
+  }
+
+  Widget _buildForm() {
+    return Form(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: _buildFormChildren(),
+      ),
+
+    );
+  }
+
+  List<Widget>_buildFormChildren() {
+    return [
+      TextFormField(
+        decoration: InputDecoration(labelText: 'Job Name'),
+
+      ),
+      TextFormField(
+        decoration: InputDecoration(labelText: 'Rate Per Hour'),
+        keyboardType: TextInputType.numberWithOptions(
+          signed: false,
+          decimal: false,
+        ),
+
+      ),
+    ];
   }
 }
