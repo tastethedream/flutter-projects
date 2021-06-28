@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker_flutter_course/app/home/jobs/add_jobs_page.dart';
 import 'package:time_tracker_flutter_course/app/home/models/job.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class JobsPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Colors.indigo,
-        onPressed: () => _createJob(context),
+        onPressed: () => AddJobPage.show(context),
       ),
     );
   }
