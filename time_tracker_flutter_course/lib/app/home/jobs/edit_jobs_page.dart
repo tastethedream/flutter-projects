@@ -7,26 +7,27 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:time_tracker_flutter_course/widgets/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/widgets/show_exception_alert_dialog.dart';
 
-class AddJobPage extends StatefulWidget {
+class EditJobPage extends StatefulWidget {
 // Allow this widget access to the database
-  const AddJobPage({Key key, @ required this.database}) : super(key: key);
+  const EditJobPage({Key key, @ required this.database, this.job}) : super(key: key);
   final Database database;
+  final Job job;
 
 
-  static Future<void> show(BuildContext context) async {
+  static Future<void> show(BuildContext context, {Job job}) async {
     final database = Provider.of<Database>(context, listen: false);
     await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context ) => AddJobPage(database: database),
+      MaterialPageRoute(builder: (context ) => EditJobPage(database: database, job: job),
       fullscreenDialog: true,
       ),
     );
   }
 
   @override
-  _AddJobPageState createState() => _AddJobPageState();
+  _EditJobPageState createState() => _EditJobPageState();
 }
 
-class _AddJobPageState extends State<AddJobPage> {
+class _EditJobPageState extends State<EditJobPage> {
   // create form key
   final _formKey = GlobalKey<FormState>();
 
@@ -36,6 +37,17 @@ class _AddJobPageState extends State<AddJobPage> {
 
   String _name;
   int _ratePerHour;
+
+  // assign initial values to our local variable if the job is not null
+  // this can then be added as an initial value in the _buildFormChildren() below
+  @override
+  void initState() {
+    super.initState();
+    if(widget.job != null) {
+      _name = widget.job.name;
+      _ratePerHour = widget.job.ratePerHour;
+    }
+  }
 
   //use key to access the form
   bool _validateAndSaveForm() {
@@ -85,7 +97,7 @@ class _AddJobPageState extends State<AddJobPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 2.0,
-        title: Text('New Job'),
+        title: Text(widget.job == null ? 'New Job' : 'Edit Job'),
         actions: [
           FlatButton(
               onPressed: _submit,
@@ -113,10 +125,8 @@ class _AddJobPageState extends State<AddJobPage> {
             padding: const EdgeInsets.all(16.0),
             child: _buildForm(),
             ),
-
           ),
         ),
-
     );
   }
 
@@ -127,7 +137,6 @@ class _AddJobPageState extends State<AddJobPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: _buildFormChildren(),
       ),
-
     );
   }
 
@@ -135,14 +144,16 @@ class _AddJobPageState extends State<AddJobPage> {
     return [
       TextFormField(
         decoration: InputDecoration(labelText: 'Job Name'),
-        focusNode: _nameFocusNode,
+        initialValue: _name,
+        //focusNode: _nameFocusNode,
         validator: (value) => value.isNotEmpty ? null : 'Name field cannot be empty',
         onSaved: (value) => _name = value,
 
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Rate Per Hour'),
-        focusNode: _rateFocusNode,
+        initialValue: _ratePerHour != null ? '$_ratePerHour' : null,
+        //focusNode: _rateFocusNode,
         keyboardType: TextInputType.numberWithOptions(
           signed: false,
           decimal: false,
