@@ -74,7 +74,10 @@ class JobsPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           backgroundColor: Colors.indigo,
-          onPressed: () => EditJobPage.show(context),
+          onPressed: () => EditJobPage.show(
+              context,
+              database: Provider.of<Database>(context, listen: false),
+          ),
         ),
       );
     }
