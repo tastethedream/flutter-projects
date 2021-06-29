@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker_flutter_course/app/home/job_entries/job_entries_page.dart';
 import 'package:time_tracker_flutter_course/app/home/jobs/edit_jobs_page.dart';
 import 'package:time_tracker_flutter_course/app/home/jobs/job_list_tile.dart';
 import 'package:time_tracker_flutter_course/app/home/jobs/list_items_builder.dart';
@@ -93,7 +94,7 @@ class JobsPage extends StatelessWidget {
                   onDismissed: (direction) => _delete(context, job: job),
                   child: JobListTile(
                     job: job,
-                    onTap: () => EditJobPage.show(context, job: job),
+                    onTap: () => JobEntriesPage.show(context, job),
                   ),
                 ),
           );
