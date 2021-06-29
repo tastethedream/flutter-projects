@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,16 +9,17 @@ import 'package:time_tracker_flutter_course/widgets/show_exception_alert_dialog.
 
 class EditJobPage extends StatefulWidget {
 // Allow this widget access to the database
-  const EditJobPage({Key key, @ required this.database, this.job}) : super(key: key);
+  const EditJobPage({Key key, @required this.database, this.job})
+      : super(key: key);
   final Database database;
   final Job job;
-
 
   static Future<void> show(BuildContext context, {Job job}) async {
     final database = Provider.of<Database>(context, listen: false);
     await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context ) => EditJobPage(database: database, job: job),
-      fullscreenDialog: true,
+      MaterialPageRoute(
+        builder: (context) => EditJobPage(database: database, job: job),
+        fullscreenDialog: true,
       ),
     );
   }
@@ -45,7 +44,7 @@ class _EditJobPageState extends State<EditJobPage> {
   @override
   void initState() {
     super.initState();
-    if(widget.job != null) {
+    if (widget.job != null) {
       _name = widget.job.name;
       _ratePerHour = widget.job.ratePerHour;
     }
@@ -54,7 +53,7 @@ class _EditJobPageState extends State<EditJobPage> {
   //use key to access the form
   bool _validateAndSaveForm() {
     final form = _formKey.currentState;
-    if(form.validate()) {
+    if (form.validate()) {
       form.save();
       return true;
     }
@@ -65,41 +64,41 @@ class _EditJobPageState extends State<EditJobPage> {
   // submit data to firestore
   // manage errors
   Future<void> _submit() async {
-     if(_validateAndSaveForm()) {
-       try {
-         // get the current list of jobs from firestore
-      final jobs = await widget.database.jobsStream().first;
-      // get all the job names inside the list
-      final allNames = jobs.map((job) => job.name).toList();
-      //allow user to keep same name when editing job
-      if(widget.job != null){
-        allNames.remove(widget.job.name);
-      }
-      // ensure all job names are unique(not duplicated)
-      if (allNames.contains(_name)) {
-        showAlertDialog(
+    if (_validateAndSaveForm()) {
+      try {
+        // get the current list of jobs from firestore
+        final jobs = await widget.database.jobsStream().first;
+        // get all the job names inside the list
+        final allNames = jobs.map((job) => job.name).toList();
+        //allow user to keep same name when editing job
+        if (widget.job != null) {
+          allNames.remove(widget.job.name);
+        }
+        // ensure all job names are unique(not duplicated)
+        if (allNames.contains(_name)) {
+          showAlertDialog(
             context,
             title: 'Duplicate Name',
             content: 'Please select and alternative job name',
             defaultActionText: 'Ok',
+          );
+        } else {
+          //does the document id already exist?
+          final id = widget.job?.id ?? documentIdFromCurrentDate();
+          final job = Job(id: id, name: _name, ratePerHour: _ratePerHour);
+          await widget.database.setJob(job);
+          Navigator.of(context).pop();
+        }
+      } on FirebaseException catch (e) {
+        showExceptionAlertDialog(
+          context,
+          title: 'Problem with adding new job',
+          exception: e,
         );
-      } else {
-        //does the document id already exist?
-        final id = widget.job?.id ?? documentIdFromCurrentDate();
-        final job = Job(id: id, name: _name, ratePerHour: _ratePerHour);
-        await widget.database.setJob(job);
-        Navigator.of(context).pop();
       }
-    } on FirebaseException catch (e){
-         showExceptionAlertDialog(
-             context,
-             title: 'Problem with adding new job',
-             exception: e,
-         );
-
-       }
-       }
+    }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,14 +107,11 @@ class _EditJobPageState extends State<EditJobPage> {
         title: Text(widget.job == null ? 'New Job' : 'Edit Job'),
         actions: [
           FlatButton(
-              onPressed: _submit,
-              child: Text(
-                'Save',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.white
-                ),
-              ),
+            onPressed: _submit,
+            child: Text(
+              'Save',
+              style: TextStyle(fontSize: 18.0, color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -132,9 +128,9 @@ class _EditJobPageState extends State<EditJobPage> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: _buildForm(),
-            ),
           ),
         ),
+      ),
     );
   }
 
@@ -148,15 +144,15 @@ class _EditJobPageState extends State<EditJobPage> {
     );
   }
 
-  List<Widget>_buildFormChildren() {
+  List<Widget> _buildFormChildren() {
     return [
       TextFormField(
         decoration: InputDecoration(labelText: 'Job Name'),
         initialValue: _name,
         //focusNode: _nameFocusNode,
-        validator: (value) => value.isNotEmpty ? null : 'Name field cannot be empty',
+        validator: (value) =>
+            value.isNotEmpty ? null : 'Name field cannot be empty',
         onSaved: (value) => _name = value,
-
       ),
       TextFormField(
         decoration: InputDecoration(labelText: 'Rate Per Hour'),
@@ -166,8 +162,7 @@ class _EditJobPageState extends State<EditJobPage> {
           signed: false,
           decimal: false,
         ),
-        onSaved: (value) => _ratePerHour = int.tryParse(value)?? 0,
-
+        onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,
       ),
     ];
   }

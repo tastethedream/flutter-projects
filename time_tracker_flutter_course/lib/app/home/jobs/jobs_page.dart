@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/home/jobs/edit_jobs_page.dart';
+import 'package:time_tracker_flutter_course/app/home/jobs/empty_content.dart';
 import 'package:time_tracker_flutter_course/app/home/jobs/job_list_tile.dart';
 import 'package:time_tracker_flutter_course/app/home/models/job.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
@@ -70,13 +71,17 @@ class JobsPage extends StatelessWidget {
         builder:(context, snapshot) {
           if (snapshot.hasData) {
             final jobs = snapshot.data;
-            final children = jobs.map((job) => JobListTile(
-                job:job,
-                onTap: () => EditJobPage.show(context, job: job),
-            ),
-            ).toList();
-            return ListView(children: children);
-
+            //if jobs list is empty show a different screen(empty_content.dart)
+            if(jobs.isNotEmpty) {
+              final children = jobs.map((job) =>
+                  JobListTile(
+                    job: job,
+                    onTap: () => EditJobPage.show(context, job: job),
+                  ),
+              ).toList();
+              return ListView(children: children);
+            }
+            return EmptyContent();
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error'));
