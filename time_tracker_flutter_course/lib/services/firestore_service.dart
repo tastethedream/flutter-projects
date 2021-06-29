@@ -5,10 +5,21 @@ class FirestoreService {
   FirestoreService._();
   static final instance = FirestoreService._();
 
-  Future<void> setData({String path, Map<String, dynamic> data}) async {
+  // method to add jobs
+  Future<void> setData({
+    @required String path,
+    @required Map<String, dynamic> data,
+  }) async {
     final reference = FirebaseFirestore.instance.doc(path);
     print('$path: $data');
     await reference.set(data);
+  }
+
+  // method to delete jobs
+  Future<void> deleteData({@required String path}) async {
+    final reference = FirebaseFirestore.instance.doc(path);
+    print('delete: $path');
+    await reference.delete();
   }
 
   Stream<List<T>> collectionStream<T>({
