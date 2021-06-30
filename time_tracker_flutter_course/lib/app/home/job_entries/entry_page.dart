@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:time_tracker_flutter_course/app/home/job_entries/date_time_picker.dart';
+import 'package:time_tracker_flutter_course/widgets/date_time_picker.dart';
 import 'package:time_tracker_flutter_course/app/home/job_entries/format.dart';
 import 'package:time_tracker_flutter_course/app/home/models/entry.dart';
 import 'package:time_tracker_flutter_course/app/home/models/job.dart';
@@ -15,6 +15,7 @@ class EntryPage extends StatefulWidget {
   final Job job;
   final Entry entry;
 
+  //navigator to the entry page
   static Future<void> show(
       {BuildContext context, Database database, Job job, Entry entry}) async {
     await Navigator.of(context).push(
@@ -65,7 +66,8 @@ class _EntryPageState extends State<EntryPage> {
       comment: _comment,
     );
   }
-
+// called when user clicks the create button
+  //create entry in firestore and then dismiss the page
   Future<void> _setEntryAndDismiss(BuildContext context) async {
     try {
       final entry = _entryFromState();
@@ -121,8 +123,8 @@ class _EntryPageState extends State<EntryPage> {
       labelText: 'Start',
       selectedDate: _startDate,
       selectedTime: _startTime,
-      selectDate: (date) => setState(() => _startDate = date),
-      selectTime: (time) => setState(() => _startTime = time),
+      onSelecetedDate: (date) => setState(() => _startDate = date),
+      onSelecetedTime: (time) => setState(() => _startTime = time),
     );
   }
 
@@ -131,11 +133,11 @@ class _EntryPageState extends State<EntryPage> {
       labelText: 'End',
       selectedDate: _endDate,
       selectedTime: _endTime,
-      selectDate: (date) => setState(() => _endDate = date),
-      selectTime: (time) => setState(() => _endTime = time),
+      onSelecetedDate: (date) => setState(() => _endDate = date),
+      onSelecetedTime: (time) => setState(() => _endTime = time),
     );
   }
-
+//calculate the difference between the start and the end time
   Widget _buildDuration() {
     final currentEntry = _entryFromState();
     final durationFormatted = Format.hours(currentEntry.durationInHours);

@@ -26,6 +26,7 @@ class FirestoreService {
     Query Function(Query query) queryBuilder,
     int Function(T lhs, T rhs) sort,
   }) {
+    //filter out objects outside of the query
     Query query = FirebaseFirestore.instance.collection(path);
     if (queryBuilder != null) {
       query = queryBuilder(query);
@@ -43,7 +44,8 @@ class FirestoreService {
     });
   }
 
-  Stream<T> documentStream<T>({
+  // enable access to a single document as a stream(not used yet)
+    Stream<T> documentStream<T>({
     @required String path,
     @required T builder(Map<String, dynamic> data, String documentID),
   }) {
