@@ -18,7 +18,8 @@ class EntryPage extends StatefulWidget {
   //navigator to the entry page
   static Future<void> show(
       {BuildContext context, Database database, Job job, Entry entry}) async {
-    await Navigator.of(context).push(
+    //rootNavigator: true will present the page above the bottom navigation so users cannot use this when adding a new job details
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) =>
             EntryPage(database: database, job: job, entry: entry),

@@ -15,7 +15,8 @@ class EditJobPage extends StatefulWidget {
   final Job job;
 
   static Future<void> show(BuildContext context, {Database database,Job job}) async {
-    await Navigator.of(context).push(
+    //rootNavigator: true will present the page above the bottom navigation so users cannot use this when adding a new job
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => EditJobPage(database: database, job: job),
         fullscreenDialog: true,
