@@ -1,23 +1,22 @@
-# Flutter & Firebase Course | Code With Andrea
+# Time Tracker Application
 
-This repo contains the source code for my [Flutter & Firebase Course](https://nnbd.me/ff) on Udemy.
+This application was built whilst taking [Flutter & Firebase](https://courses.codewithandrea.com/) 
 
-## Running the project with Firebase
+The application allows various methods of sign in and Authentication
 
-To use this project with Firebase, some configuration steps are required.
+![login screen](images/login_screen.png)
 
-- Create a new project with the Firebase console.
-- Add iOS and Android apps in the Firebase project settings.
-- On Android, use `com.codingwithflutter.time_tracker_flutter_course` as the package name.
-- then, [download and copy](https://firebase.google.com/docs/flutter/setup#configure_an_android_app) `google-services.json` into `android/app`.
-- On iOS, use `com.codingwithflutter.timeTrackerFlutterCourse` as the bundle ID.
-- then, [download and copy](https://firebase.google.com/docs/flutter/setup#configure_an_ios_app) `GoogleService-Info.plist` into `iOS/Runner`, and add it to the Runner target in Xcode.
+  
+  A page to record jobsand hourly rates
 
-See this page for full instructions:
+   ![job screen](images/job_screen.png)
 
-- [FlutterFire Overview](https://firebase.flutter.dev/docs/overview) 
+ You can then break down the job tasks givving more detail
 
-The setup steps are also explained in the course.
+  ![jpb detail screen](images/job_detail_screen.png)
 
-### [License: MIT](LICENSE.md)
+  A bottom navigation bar allows access to all the screens, including a list of all
+  job entries
+
+   ![Entries screen](images/entries_screen.png)  
 
