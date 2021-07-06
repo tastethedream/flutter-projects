@@ -11,32 +11,8 @@ import 'package:time_tracker_flutter_course/services/database.dart';
 import 'package:time_tracker_flutter_course/widgets/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/widgets/show_exception_alert_dialog.dart';
 
+
 class JobsPage extends StatelessWidget {
-//Method for signing out
-
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signOut();
-      print('user signed out');
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await showAlertDialog(
-      context,
-      title: 'Logout',
-      content: 'Are you sure you wish to logout?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Logout',
-    );
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    }
-  }
-
   // Method to swipe to delete
   Future<void> _delete(BuildContext context, {Job job}) async {
     try {
@@ -51,55 +27,46 @@ class JobsPage extends StatelessWidget {
     }
   }
 
-    @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Jobs'),
-          actions: [
-            IconButton(
-                icon: Icon(Icons.add, color: Colors.white),
-                onPressed: () => EditJobPage.show(
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Jobs'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add, color: Colors.white),
+            onPressed: () =>
+                EditJobPage.show(
                   context,
                   database: Provider.of<Database>(context, listen: false),
                 ),
-            ),
-            FlatButton(
-              child: Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
+          ),
+        ],
+      ),
+      body: _buildContents(context),
+    );
+  }
+
+  Widget _buildContents(BuildContext context) {
+    final database = Provider.of<Database>(context, listen: false);
+    return StreamBuilder<List<Job>>(
+      stream: database.jobsStream(),
+      builder: (context, snapshot) {
+        return ListItemsBuilder<Job>(
+          snapshot: snapshot,
+          itemBuilder: (context, job) =>
+              Dismissible(
+                key: Key('job-${job.id}'),
+                background: Container(color: Colors.red),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) => _delete(context, job: job),
+                child: JobListTile(
+                  job: job,
+                  onTap: () => JobEntriesPage.show(context, job),
                 ),
               ),
-              onPressed: () => _confirmSignOut(context),
-            )
-          ],
-        ),
-        body: _buildContents(context),
-      );
-    }
-
-    Widget _buildContents(BuildContext context) {
-      final database = Provider.of<Database>(context, listen: false);
-      return StreamBuilder<List<Job>>(
-        stream: database.jobsStream(),
-        builder: (context, snapshot) {
-          return ListItemsBuilder<Job>(
-            snapshot: snapshot,
-            itemBuilder: (context, job) =>
-                Dismissible(
-                  key: Key('job-${job.id}'),
-                  background: Container(color: Colors.red),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) => _delete(context, job: job),
-                  child: JobListTile(
-                    job: job,
-                    onTap: () => JobEntriesPage.show(context, job),
-                  ),
-                ),
-          );
-        },
-      );
-    }
+        );
+      },
+    );
   }
+}
