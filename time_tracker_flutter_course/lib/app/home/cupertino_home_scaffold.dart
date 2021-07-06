@@ -17,6 +17,8 @@ class CupertinoHomeScaffold extends StatelessWidget {
   final ValueChanged<TabItem> onSelectTab;
   // widget builders
   final Map<TabItem, WidgetBuilder> widgetBuilders;
+  //navigate to correct page from bottom tab bar
+
 
   @override
   Widget build(BuildContext context) {
