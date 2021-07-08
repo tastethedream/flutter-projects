@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class Job {
@@ -11,6 +12,9 @@ class Job {
       return null;
   }
     final String name = data['name'];
+    if(name == null) {
+      return null;
+    }
     final int ratePerHour = data['ratePerHour'];
     return Job(
       id: documentId,
@@ -28,4 +32,23 @@ class Job {
       'ratePerHour': ratePerHour,
     };
   }
+/*
+  @override
+  int get hashCode => hashValues(id, name, ratePerHour);
+
+  @override
+  bool operator ==(other) {
+    //check if the two references are the same object in memory
+    if (identical(this, other)) return true;
+    // check if the other object is of the same type as the current one
+    if (runtimeType != other.runtimeType) return false;
+    // The other object is of type job
+    final Job otherJob = other;
+    return id == otherJob.id &&
+        name == otherJob.name &&
+        ratePerHour == otherJob.ratePerHour;
+
+  }
+
+ */
 }
