@@ -354,7 +354,7 @@ void main() {
 
 }
 ```
-You can also test the child of the raised button. Here we are checking the child 
+You can also test a widget within a widget . Here we are checking the child of the raised button   
 has a Text field.
 
 ```
@@ -373,6 +373,105 @@ void main() {
 ```
 
 ## Testing Widget Callbacks
+
+Here we are testing the OnPressed call back for our RaisedButton widget
+
+- Create a variable `pressed` and set it to false
+- When the button is pressed we expect the value to become true
+
+```
+void main() {
+  testWidgets('', (WidgetTester tester) async {
+    var pressed = false;
+    await tester.pumpWidget(MaterialApp(home: CustomRaisedButton(
+      child: Text('tap me'),
+      onPressed: () => pressed = true,
+    )));
+    // test if the widget contains a raised button
+    final button = find.byType(RaisedButton);
+    expect(button, findsOneWidget);
+    expect(find.text('tap me'), findsOneWidget);
+    await tester.tap(button);
+    expect(pressed, true);
+  });
+
+}
+```
+
+- Always use `await` when calling tester methods
+
+## Working With Acceptance Criteria
+
+Acceptance criteria is usually written in **Given, then, when** format.
+
+### Test Mocks and Mokito
+
+- A **Mock** is a simulated object that mimics the behavior of a real object 
+in a controlled way.
+
+- **Mockito** is package that makes it easier to write and cofigure mocks and check when mock
+methods area called.
+
+- Here we have written a mock Authentication class and set up a mock Auth service
+
+```
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
+import 'package:time_tracker_flutter_course/app/sign_in/email_sign_in_form_stateful.dart';
+import 'package:time_tracker_flutter_course/services/auth.dart';
+
+
+//mock class for authentication service
+class MockAuth extends Mock implements AuthBase {}
+
+void main() {
+  // declare MockAuth variable
+  MockAuth mockAuth;
+  //set up mock auth service
+  setUp(() {
+    mockAuth = MockAuth();
+  });
+
+  Future<void> pumpEmailSignInForm(WidgetTester tester) async {
+    await tester.pumpWidget(
+      Provider<AuthBase>(
+        create: (_) => mockAuth,
+        child: MaterialApp(
+          home: Scaffold(body: EmailSignInFormStateful()),
+        ),
+      ),
+    );
+  }
+}
+```
+#### Verify mock methods
+
+- **expect** Asserts actual value vs matcher
+
+- **Verify** check if method is called on mock
+
+The following test confirms that the sign in method was not called 
+
+```
+testWidgets('when user does not enter '
+      'email and taps sign in button then'
+      ' signInWithEmailAndPassword is not called', (WidgetTester tester) async {
+        await pumpEmailSignInForm(tester);
+
+        final signInButton = find.text('Sign In');
+        await tester.tap(signInButton);
+
+        verifyNever(mockAuth.signInWithEmailAndPassword(any, any));
+  });
+```
+
+
+
+
+
+
 
 
 
